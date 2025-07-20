@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Bot, User, Loader, MessageSquare, BookOpen, Target, Home, ArrowLeft, RotateCcw } from 'lucide-react';
+import { API_ENDPOINTS } from '../config/api';
 
 interface Message {
   id: string;
@@ -133,7 +134,7 @@ Let's start: What motivated you to study **${course}**, and what aspects of this
     setMessages(prev => [...prev, typingMessage]);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat-assess', {
+      const response = await fetch(API_ENDPOINTS.chatAssess, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

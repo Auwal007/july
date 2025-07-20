@@ -6,7 +6,15 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS for production
+cors_origins = [
+    "http://localhost:5173",  # Development
+    "https://skillbridge-ai.netlify.app",  # Replace with your actual Netlify URL
+    "https://*.netlify.app"  # Allow any Netlify subdomain
+]
+
+CORS(app, origins=cors_origins, methods=['GET', 'POST'], allow_headers=['Content-Type', 'Authorization'])
 
 # Configuration
 KIMI_API_KEY = os.getenv('KIMI_API_KEY')
