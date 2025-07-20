@@ -1,185 +1,172 @@
-# SkillBridge AI
+# 🎓 SkillBridge AI – 3MTT Knowledge Showcase (July 2025 - Edition)
 
-An intelligent career assessment platform designed specifically for Nigerian graduates to evaluate their employability and receive personalized skill development recommendations.
+## **Project Creator**
 
-## Features
+**Name**: Muhammad Adam Isma'il
 
-- **Course-Specific Assessment**: Tailored questions based on your field of study
-- **AI-Powered Analysis**: Uses Kimi K2 AI model for intelligent skill gap analysis
-- **Personalized Recommendations**: Get curated learning resources and project ideas
-- **Instant Results**: No signup required, get immediate feedback
-- **Mobile-Responsive**: Works seamlessly on all devices
-- **PDF Export**: Download your assessment results
+**3MTT ID**: FE/23/74562980
 
-## Tech Stack
+**3MTT Learning Track**: Data Science
 
-### Frontend
-- React 18 with TypeScript
-- Tailwind CSS for styling
-- Lucide React for icons
-- Vite for build tooling
+**Cohort**: 3
 
-### Backend
-- Python Flask
-- Flask-CORS for cross-origin requests
-- Kimi K2 AI API integration
-- RESTful API design
+**Location**: Jos, Plateau State.
 
-## Getting Started
+## Project Live Demo
 
-### Prerequisites
-- Node.js (v16 or higher)
-- Python 3.8 or higher
-- Kimi API key (from Moonshot AI)
+👉 **[Click here to try the deployed AI platform](#)** *(Coming Soon)*
 
-### Installation
+---
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd skillbridge-ai
-   ```
+This repository presents an AI-powered solution developed for the **3MTT Knowledge Showcase – July Edition**, under the **AI-Powered Solutions** category. It uses advanced conversational AI to **assess career readiness** of Nigerian graduates, showcasing how AI can bridge the gap between **education and employment** through personalized skill analysis, gap identification, and career development planning.
 
-2. **Setup Frontend**
-   ```bash
-   npm install
-   ```
+👉 **[Click here to try the deployed AI platform](#)** *(Coming Soon)*
 
-3. **Setup Backend**
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   cp .env.example .env
-   ```
+---
 
-4. **Configure Environment Variables**
-   Edit `backend/.env` and add your Kimi API key:
-   ```
-   KIMI_API_KEY=your-actual-api-key-here
-   ```
+## 🎓 Project Description
 
-### Running the Application
+This project implements an intelligent conversational AI system that conducts personalized career assessments for Nigerian graduates. It includes a trained AI model and a web application built with React and Flask to provide an intuitive interface for career evaluation and development planning.
 
-1. **Start the Backend Server**
-   ```bash
-   cd backend
-   python run.py
-   ```
-   The backend will run on `http://localhost:5000`
+The goal is to demonstrate the application of AI in career development for better graduate employability, skill optimization, and job market alignment in Nigeria.
 
-2. **Start the Frontend Development Server**
-   ```bash
-   npm run dev
-   ```
-   The frontend will run on `http://localhost:5173`
+---
 
-## API Endpoints
+## AI in Career Development and Nigerian Graduate Employability
 
-### GET `/api/health`
-Health check endpoint
+Graduate unemployment is a significant challenge in Nigeria. Factors such as skill-job misalignment, lack of practical experience, inadequate career guidance, and disconnect between academic curriculum and industry needs contribute to high unemployment rates among Nigerian graduates.
 
-### GET `/api/courses`
-Get list of supported courses
+Artificial Intelligence, particularly through conversational career assessment tools, offers a powerful approach to address these issues. By providing personalized analysis of graduate skills and career potential, AI enables:
 
-### POST `/api/questions`
-Get assessment questions for a specific course
-```json
-{
-  "course": "Computer Science"
-}
+- **Personalized Skill Assessment**: Deep understanding of individual graduate capabilities through intelligent conversations
+- **Gap Identification**: Precise identification of missing skills required for employment in specific fields
+- **Tailored Development Plans**: Custom learning paths and project recommendations based on individual needs
+- **Market Alignment**: Insights into Nigerian job market demands and opportunities
+- **Career Clarity**: Helping graduates understand their potential and optimal career paths
+
+👉 **[Click here to try the deployed AI assessment platform](#)** *(Coming Soon)*
+
+> ⚠️ **Note**: This is a comprehensive demo project. A real-world robust career assessment system would benefit from integration with:
+> - Live job market data APIs
+> - University partnership systems
+> - Employer feedback mechanisms
+> - Continuous learning algorithms
+> - Regional economic indicators
+> - Industry-specific skill databases
+
+This demo serves as a **proof-of-concept** for the valuable role AI can play in building a more employable workforce for Nigeria.
+
+---
+
+## 🎯 3MTT Knowledge Showcase (July Edition) Context
+
+- **Category**: AI-Powered Solutions  
+- **Objective**: Build and showcase a project utilizing AI to solve a real-world problem  
+- **Submission**: Hosted on GitHub with live demo showcasing conversational AI in action for career assessment
+
+---
+
+## 📁 Files in this Repository
+
+### **Backend (Flask API)**
+- **`backend/app.py`**: Flask-based API server with AI integration and career assessment logic
+- **`backend/requirements.txt`**: Python dependencies for the backend server
+
+### **Frontend (React Application)**
+- **`src/`**: React application directory containing:
+  - `src/App.tsx`: Main application component and routing logic
+  - `src/components/`: React components for different application features
+    - `Homepage.tsx`: Landing page with compelling call-to-action
+    - `CourseInput.tsx`: Course selection interface
+    - `AIChat.tsx`: Conversational AI assessment interface
+    - `ChatResults.tsx`: Comprehensive results and recommendations display
+  - `src/index.css`: Global styling with Tailwind CSS
+
+### **Configuration Files**
+- **`package.json`**: Node.js dependencies and scripts
+- **`vite.config.ts`**: Vite build configuration
+- **`tailwind.config.js`**: Tailwind CSS configuration
+- **`tsconfig.json`**: TypeScript configuration
+
+---
+
+## 🤖 AI System Architecture
+
+### **Conversational AI Pipeline**:
+1. **Natural Language Processing**: Understanding graduate responses and extracting meaningful information
+2. **Contextual Analysis**: Analyzing conversation patterns, confidence levels, and skill indicators
+3. **Skill Mapping**: Mapping mentioned experiences to industry-required competencies
+4. **Gap Analysis**: Identifying missing skills and improvement areas
+5. **Recommendation Engine**: Generating personalized development plans and resources
+
+### **Assessment Phases**:
+1. **Introduction**: Understanding background and motivation
+2. **Exploration**: Deep dive into skills and experiences
+3. **Deep Analysis**: Identifying strengths and weaknesses
+4. **Synthesis**: Comprehensive assessment and planning
+
+---
+
+## 🚀 How to Run the Application
+
+### **Backend Setup**:
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export KIMI_API_KEY=your_openrouter_api_key
+
+# Run the Flask server
+python run.py
 ```
 
-### POST `/api/assess`
-Submit assessment answers and get results
-```json
-{
-  "course": "Computer Science",
-  "questions": [...],
-  "answers": [...]
-}
+### **Frontend Setup**:
+```bash
+# Install Node.js dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
 
-## Course Support
+- Once both servers start, open your web browser and navigate to `http://localhost:5173` for the React frontend
+- The Flask API runs on `http://localhost:5000`
 
-The app supports both predefined courses and AI-generated assessments for any course:
+---
 
-### Predefined Courses (with optimized questions):
-- Computer Science
-- Mass Communication
-- Mechanical Engineering
+## 🔢 Data Required for Assessment
 
-### AI-Generated Assessments:
-- Any other course of study
-- Dynamically generated questions based on course requirements
+The AI assessment system processes:
 
-## Features in Detail
+1. **Course of Study**: Graduate's field of study (selected from comprehensive list)
+2. **Academic Background**: Educational experiences and achievements
+3. **Practical Experience**: Projects, internships, and work experience
+4. **Skills Inventory**: Technical and soft skills possessed
+5. **Career Aspirations**: Goals and preferred career paths
+6. **Challenges**: Identified obstacles and concerns
 
-### 1. Dynamic Question Generation
-- Predefined questions for popular courses
-- AI-generated questions for any course
-- Context-aware and industry-specific
+### **Assessment Output**:
+- **Skill Analysis**: Current skills, missing skills, strength areas
+- **Employability Score**: Quantified career readiness (0-100)
+- **Personalized Plan**: Short-term, medium-term, and long-term goals
+- **Resources**: Curated learning materials and project ideas
+- **Market Insights**: Nigerian job market alignment and opportunities
 
-### 2. Intelligent Scoring
-- Weighted scoring system (Yes=1, Maybe=0.5, No=0)
-- Percentage-based employability score
-- Skill gap identification
 
-### 3. Personalized Recommendations
-- AI-curated learning resources
-- Free and accessible materials
-- Nigerian job market focused
+---
 
-### 4. Project Suggestions
-- Hands-on project ideas
-- Skill-building focused
-- Portfolio development
+## 🙏 Acknowledgements
 
-### 5. Export Functionality
-- Download results as text file
-- Shareable format
-- Complete assessment summary
+**3MTT Initiative** - For providing the platform to showcase AI innovation for social good
 
-## Development
+**OpenRouter & DeepSeek** - For advanced AI capabilities that power the conversational assessment
 
-### Project Structure
-```
-skillbridge-ai/
-├── src/
-│   ├── components/
-│   │   ├── Homepage.tsx
-│   │   ├── CourseInput.tsx
-│   │   ├── SkillAssessment.tsx
-│   │   └── Results.tsx
-│   ├── App.tsx
-│   └── main.tsx
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   └── run.py
-└── README.md
-```
+**Nigerian Graduates** - The inspiration and target audience for this transformative solution
 
-### Key Components
+---
 
-- **Homepage**: Landing page with app introduction
-- **CourseInput**: Course selection interface
-- **SkillAssessment**: Interactive questionnaire
-- **Results**: Assessment results and recommendations
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Moonshot AI for the Kimi K2 API
-- Nigerian graduate community for inspiration
-- Open source learning platforms for resource recommendations
+Made with ❤️ to showcase how AI can bridge the education-employment gap and empower Nigerian graduates for career success.
