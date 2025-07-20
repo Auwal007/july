@@ -4,7 +4,7 @@ const API_CONFIG = {
     baseURL: 'http://localhost:5000'
   },
   production: {
-    baseURL: 'https://skillbridge-api.azurewebsites.net'  // Replace with your actual Azure URL
+    baseURL: 'https://skillbridge-api.azurewebsites.net' 
   }
 };
 

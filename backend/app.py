@@ -10,8 +10,9 @@ app = Flask(__name__)
 # Configure CORS for production
 cors_origins = [
     "http://localhost:5173",  # Development
-    "https://skillbridge-ai.netlify.app",  # Replace with your actual Netlify URL
-    "https://*.netlify.app"  # Allow any Netlify subdomain
+    "https://skillbridgeai.netlify.app",  # Your Netlify URL (update this)
+    "https://*.netlify.app",  # Allow any Netlify subdomain
+    "https://portal.azure.com"  # Allow Azure portal for testing
 ]
 
 CORS(app, origins=cors_origins, methods=['GET', 'POST'], allow_headers=['Content-Type', 'Authorization'])
@@ -28,7 +29,7 @@ def call_kimi_api(prompt):
         headers = {
             'Authorization': f'Bearer {KIMI_API_KEY}',
             'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://skillbridge-ai.com',  # Optional site URL
+            'HTTP-Referer': 'https://skillbridgeai.com',  # Optional site URL
             'X-Title': 'SkillBridge AI'  # Optional site title
         }
         
