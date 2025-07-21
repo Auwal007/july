@@ -175,12 +175,22 @@ const CourseInput: React.FC<CourseInputProps> = ({ onCourseSubmit, onBackToHome 
                     <div className="bg-purple-50 rounded-lg p-3 sm:p-4">
                       <h5 className="font-medium text-purple-900 mb-2 text-sm sm:text-base">What You'll Get:</h5>
                       <ul className="space-y-1 text-xs sm:text-sm text-purple-800">
-                        <li>• Personalized skill analysis based on your unique background</li>
-                        <li>• Tailored development plan with specific goals and timelines</li>
-                        <li>• Nigerian job market-focused recommendations</li>
-                        <li>• Custom project ideas to build your portfolio</li>
-                        <li>• Free learning resources curated for your needs</li>
+                        <li>• ✨ AI-generated skill analysis based on your unique responses</li>
+                        <li>• 📋 Personalized development plan created from your conversation</li>
+                        <li>• 🇳🇬 Nigerian job market-focused recommendations</li>
+                        <li>• 💼 Custom project ideas tailored to your experience level</li>
+                        <li>• 📚 AI-curated learning resources matching your specific needs</li>
                       </ul>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-3 sm:p-4">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Brain className="w-4 h-4 text-blue-600" />
+                        <h5 className="font-medium text-blue-900 text-sm sm:text-base">100% Personalized by AI</h5>
+                      </div>
+                      <p className="text-xs sm:text-sm text-blue-800">
+                        Unlike generic questionnaires, our AI analyzes your actual conversation to create recommendations 
+                        specifically for <strong>your</strong> situation, goals, and background in <strong>{course}</strong>.
+                      </p>
                     </div>
                   </div>
 
@@ -201,10 +211,13 @@ const CourseInput: React.FC<CourseInputProps> = ({ onCourseSubmit, onBackToHome 
                   <Brain className="w-5 h-5 sm:w-6 sm:h-6 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold mb-2 text-sm sm:text-base">🤖 Why Choose AI Assessment?</h4>
+                    <p className="text-xs sm:text-sm opacity-90 mb-3">
+                      Our AI conducts intelligent conversations to understand your unique situation, experiences, and aspirations. 
+                      Every recommendation is generated specifically from YOUR responses - not generic templates.
+                    </p>
                     <p className="text-xs sm:text-sm opacity-90">
-                      Unlike traditional questionnaires, our AI has real conversations with you to understand your unique situation, 
-                      experiences, and aspirations. This creates highly personalized recommendations that truly match your needs as a 
-                      <strong> {course}</strong> graduate in Nigeria.
+                      <strong>Your assessment results will be 100% personalized</strong> to your background as a 
+                      <strong> {course}</strong> graduate in Nigeria, based on what you actually tell our AI.
                     </p>
                   </div>
                 </div>

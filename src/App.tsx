@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 export interface ChatAssessmentData {
   course: string;
   conversation: any[];
+  assessmentType?: string;
+  aiConfidence?: number;
   skillsAnalysis: {
     currentSkills: string[];
     missingSkills: string[];

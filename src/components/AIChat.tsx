@@ -20,6 +20,8 @@ interface AIChatProps {
 interface ChatAssessmentData {
   course: string;
   conversation: Message[];
+  assessmentType?: string;
+  aiConfidence?: number;
   skillsAnalysis: {
     currentSkills: string[];
     missingSkills: string[];

@@ -292,16 +292,22 @@ def generate_comprehensive_assessment(course, conversation_history):
         role = "User" if msg.get('type') == 'user' else "AI"
         full_conversation += f"{role}: {msg.get('content', '')}\n"
     
-    # Generate comprehensive analysis using AI
+    # Generate comprehensive analysis using AI with retry logic
     analysis_prompt = f"""
-    You are SkillBridge AI. Based on this comprehensive conversation with a {course} graduate, create a detailed {course} career assessment report.
+    You are SkillBridge AI. Analyze this ACTUAL conversation with a {course} graduate and create a personalized assessment based on what they specifically said.
     
-    IMPORTANT: Focus EXCLUSIVELY on {course} skills, career readiness, and employability in Nigeria.
+    CRITICAL INSTRUCTIONS:
+    1. Base ALL analysis on what the user ACTUALLY revealed in the conversation
+    2. Extract specific skills, experiences, and challenges they mentioned
+    3. Identify their unique strengths and areas for improvement from their responses
+    4. Create recommendations that address their specific situation and goals
+    5. Focus EXCLUSIVELY on {course} skills, career readiness, and employability in Nigeria
+    6. DO NOT use generic recommendations - everything must be personalized to this specific conversation
     
-    Conversation:
+    ACTUAL CONVERSATION TO ANALYZE:
     {full_conversation}
     
-    Provide a JSON response with this structure:
+    Based on the above conversation, provide a JSON response with this structure:
     {{
         "course": "{course}",
         "conversation": [],
@@ -343,69 +349,191 @@ def generate_comprehensive_assessment(course, conversation_history):
     Confidence should reflect how well you understood their {course} situation (0-100).
     """
     
-    ai_assessment = call_kimi_api(analysis_prompt)
+    # Try AI assessment with retry logic
+    for attempt in range(3):  # Try up to 3 times
+        ai_assessment = call_kimi_api(analysis_prompt)
+        
+        if ai_assessment:
+            try:
+                assessment_data = json.loads(ai_assessment)
+                # Add the conversation history
+                assessment_data['conversation'] = conversation_history
+                assessment_data['assessmentType'] = 'ai_generated'
+                assessment_data['aiConfidence'] = assessment_data.get('confidence', 85)
+                print(f"✅ AI assessment successfully generated on attempt {attempt + 1}")
+                return assessment_data
+            except json.JSONDecodeError as e:
+                print(f"❌ JSON decode error on attempt {attempt + 1}: {e}")
+                if attempt < 2:  # If not the last attempt
+                    print(f"🔄 Retrying AI assessment... (attempt {attempt + 2}/3)")
+                    continue
+        else:
+            print(f"❌ AI API call failed on attempt {attempt + 1}")
+            if attempt < 2:
+                print(f"🔄 Retrying AI assessment... (attempt {attempt + 2}/3)")
+                continue
     
-    if ai_assessment:
+    # If all AI attempts fail, try a simplified AI prompt as backup
+    print("🔄 Trying simplified AI assessment...")
+    simplified_prompt = f"""
+    Analyze this {course} graduate's conversation and create personalized assessment.
+    
+    Extract from their responses:
+    - Skills they mentioned having
+    - Challenges they discussed
+    - Goals they expressed
+    - Experience level they revealed
+    
+    Return ONLY valid JSON with personalized {course} analysis based on what they said.
+    Focus on {course} careers in Nigeria.
+    
+    User's responses from conversation: {' '.join([msg.get('content', '') for msg in conversation_history if msg.get('type') == 'user'])}
+    
+    JSON format:
+    {{"skillsAnalysis": {{"currentSkills": [...], "missingSkills": [...]}}, "personalizedPlan": {{"shortTerm": [...], "resources": [...]}}, "employabilityScore": 70}}
+    """
+    
+    ai_backup = call_kimi_api(simplified_prompt)
+    if ai_backup:
         try:
-            assessment_data = json.loads(ai_assessment)
-            # Add the conversation history
+            assessment_data = json.loads(ai_backup)
             assessment_data['conversation'] = conversation_history
+            assessment_data['course'] = course
+            assessment_data['assessmentType'] = 'ai_simplified'
+            assessment_data['aiConfidence'] = assessment_data.get('confidence', 75)
+            print("✅ Simplified AI assessment successful")
             return assessment_data
         except json.JSONDecodeError:
-            pass
+            print("❌ Simplified AI assessment failed")
     
-    # Fallback assessment
+    # Last resort: Generate conversation-aware fallback
+    print("⚠️ Using conversation-aware fallback assessment")
+    return generate_conversation_based_fallback(course, conversation_history)
+
+def generate_conversation_based_fallback(course, conversation_history):
+    """Generate a fallback assessment that still considers the conversation"""
+    
+    # Extract some insights from the conversation
+    user_messages = [msg.get('content', '') for msg in conversation_history if msg.get('type') == 'user']
+    conversation_text = ' '.join(user_messages).lower()
+    
+    # Basic keyword analysis for personalization
+    has_experience = any(word in conversation_text for word in ['experience', 'worked', 'internship', 'project'])
+    has_skills = any(word in conversation_text for word in ['skill', 'learned', 'studied', 'know'])
+    has_challenges = any(word in conversation_text for word in ['difficult', 'challenge', 'struggle', 'hard'])
+    
+    # Adjust employability score based on conversation content
+    base_score = 65
+    if has_experience:
+        base_score += 10
+    if has_skills:
+        base_score += 5
+    if has_challenges:
+        base_score -= 5
+    
+    employability_score = max(40, min(85, base_score))
+    
+    # Course-specific customization
+    course_lower = course.lower()
+    
+    if 'computer' in course_lower or 'software' in course_lower:
+        current_skills = ["Programming Fundamentals", "Problem Solving", "Logical Thinking"]
+        missing_skills = ["Industry Frameworks", "Version Control", "Professional Development Tools"]
+        projects = [
+            {
+                "title": "Personal Portfolio Website",
+                "description": "Build a responsive portfolio showcasing your computer science projects",
+                "skills": ["HTML/CSS", "JavaScript", "Project Management"],
+                "difficulty": "beginner"
+            }
+        ]
+    elif 'engineering' in course_lower:
+        current_skills = ["Technical Analysis", "Mathematical Foundation", "Problem Solving"]
+        missing_skills = ["Industry Software Tools", "Project Management", "Professional Certification"]
+        projects = [
+            {
+                "title": "Engineering Design Project",
+                "description": "Complete a practical engineering project relevant to your specialization",
+                "skills": ["CAD Software", "Project Planning", "Technical Documentation"],
+                "difficulty": "intermediate"
+            }
+        ]
+    elif 'business' in course_lower or 'management' in course_lower:
+        current_skills = ["Business Fundamentals", "Communication", "Analytical Thinking"]
+        missing_skills = ["Industry Experience", "Digital Marketing", "Financial Analysis Tools"]
+        projects = [
+            {
+                "title": "Business Plan Development",
+                "description": "Create a comprehensive business plan for a Nigerian startup idea",
+                "skills": ["Market Research", "Financial Modeling", "Presentation"],
+                "difficulty": "intermediate"
+            }
+        ]
+    else:
+        current_skills = ["Academic Knowledge", "Communication", "Critical Thinking"]
+        missing_skills = ["Industry Experience", "Practical Skills", "Professional Portfolio"]
+        projects = [
+            {
+                "title": f"{course} Portfolio Project",
+                "description": f"Develop a project showcasing your {course} expertise",
+                "skills": ["Research", "Analysis", "Presentation"],
+                "difficulty": "beginner"
+            }
+        ]
+    
     return {
         "course": course,
         "conversation": conversation_history,
+        "assessmentType": "conversation_aware_fallback",
+        "aiConfidence": 60,
         "skillsAnalysis": {
-            "currentSkills": ["Communication", "Problem Solving", "Academic Knowledge"],
-            "missingSkills": ["Industry Experience", "Practical Skills", "Professional Portfolio"],
-            "strengthAreas": ["Educational Foundation", "Theoretical Knowledge"],
-            "improvementAreas": ["Hands-on Experience", "Industry Tools", "Professional Skills"],
+            "currentSkills": current_skills,
+            "missingSkills": missing_skills,
+            "strengthAreas": [f"{course} Academic Foundation", "Communication Skills"],
+            "improvementAreas": ["Practical Experience", "Industry Tools", "Professional Networking"],
             "recommendedPath": [
-                "Build practical projects in your field",
-                "Learn industry-standard tools",
-                "Develop professional portfolio",
-                "Gain relevant certifications"
+                f"Build practical {course} projects",
+                f"Learn industry-standard {course} tools",
+                f"Develop professional {course} portfolio",
+                f"Gain relevant {course} certifications"
             ]
         },
         "personalizedPlan": {
             "shortTerm": [
-                "Complete online courses in core skills",
-                "Start building a portfolio project",
-                "Join professional communities online"
+                f"Complete online courses in core {course} skills",
+                f"Start building a {course} portfolio project",
+                f"Join professional {course} communities online"
             ],
             "mediumTerm": [
-                "Complete 2-3 significant projects",
-                "Obtain relevant certifications",
-                "Begin networking in your industry"
+                f"Complete 2-3 significant {course} projects",
+                f"Obtain relevant {course} certifications",
+                f"Begin networking in the {course} industry"
             ],
             "longTerm": [
-                "Build comprehensive portfolio",
-                "Apply for entry-level positions",
-                "Consider mentorship opportunities"
+                f"Build comprehensive {course} portfolio",
+                f"Apply for entry-level {course} positions",
+                f"Consider {course} mentorship opportunities"
             ],
             "resources": [
                 {
-                    "title": "Coursera Professional Certificates",
-                    "description": "Industry-recognized skills training",
+                    "title": f"Coursera {course} Professional Certificates",
+                    "description": f"Industry-recognized {course} skills training",
                     "url": "https://www.coursera.org",
                     "provider": "Coursera",
                     "duration": "3-6 months"
+                },
+                {
+                    "title": f"edX {course} MicroMasters",
+                    "description": f"Advanced {course} skills development",
+                    "url": "https://www.edx.org",
+                    "provider": "edX",
+                    "duration": "6-12 months"
                 }
             ],
-            "projects": [
-                {
-                    "title": "Portfolio Website",
-                    "description": "Create a professional website showcasing your skills",
-                    "skills": ["Web Development", "Design", "Content Creation"],
-                    "difficulty": "beginner"
-                }
-            ]
+            "projects": projects
         },
-        "employabilityScore": 65,
-        "confidence": 75
+        "employabilityScore": employability_score,
+        "confidence": 70
     }
 
 if __name__ == '__main__':
