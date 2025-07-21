@@ -3,6 +3,7 @@ import Homepage from './components/Homepage';
 import CourseInput from './components/CourseInput';
 import AIChat from './components/AIChat';
 import ChatResults from './components/ChatResults';
+import Footer from './components/Footer';
 
 export interface ChatAssessmentData {
   course: string;
@@ -78,6 +79,7 @@ function App() {
           onNewAssessment={handleNewAssessment}
         />
       )}
+      <Footer />
     </div>
   );
 }

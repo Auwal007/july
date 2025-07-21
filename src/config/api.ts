@@ -4,7 +4,7 @@ const API_CONFIG = {
     baseURL: 'http://localhost:5000'
   },
   production: {
-    baseURL: 'https://skillbridge-api.azurewebsites.net' 
+    baseURL: 'https://skillbridgeai-d4dxgwezb7d6htc9.canadacentral-01.azurewebsites.net/' 
   }
 };
 
