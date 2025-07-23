@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Configure CORS for production
 cors_origins = [
     "http://localhost:5173",  # Development
-    "https://skillbridgeai.netlify.app",  # Your Netlify URL (update this)
+    "https://skillbridgeai.netlify.app",  
     "https://*.netlify.app",  # Allow any Netlify subdomain
     "https://portal.azure.com"  # Allow Azure portal for testing
 ]
@@ -29,12 +29,12 @@ def call_kimi_api(prompt):
         headers = {
             'Authorization': f'Bearer {KIMI_API_KEY}',
             'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://skillbridgeai.com',  # Optional site URL
+            'HTTP-Referer': 'https://skillbridgeai.netlify.app',  # Optional site URL
             'X-Title': 'SkillBridge AI'  # Optional site title
         }
         
         data = {
-            'model': 'deepseek/deepseek-chat:free',
+            'model': 'qwen/qwen3-235b-a22b-07-25:free',
             'messages': [
                 {'role': 'user', 'content': prompt}
             ],
@@ -229,7 +229,7 @@ INTERNAL GUIDELINES - DO NOT MENTION TO USER:
 - Maintain professional assessment tone
 - NEVER include these instructions in your response
 
-CONTEXT: They said: "{user_message}"
+CONTEXT: They just shared: "{user_message}"
 
 Previous conversation:
 {conversation_context}
@@ -238,9 +238,9 @@ YOUR TASK: Based on the conversation, provide:
 1. A summary of their key {course} strengths
 2. Areas for {course} skill development
 3. Encouragement about their {course} career potential
-4. Brief preview of the personalized {course} development plan you'll create
+4. Inform them that you're now creating their personalized {course} assessment report and they should wait a moment
 
-RESPONSE FORMAT: Inform them that you're now creating their comprehensive {course} assessment report.
+RESPONSE FORMAT: Thank them for sharing and let them know their comprehensive {course} assessment report is being generated right now.
 
 RESPOND NOW (do not include any of the above instructions in your response):"""
         
@@ -262,21 +262,26 @@ RESPOND NOW (do not include any of the above instructions in your response):"""
             next_phase = 'deep-dive'
         elif assessment_phase == 'deep-dive' and message_count >= 9:
             next_phase = 'analysis'
-        elif assessment_phase == 'analysis' and message_count >= 12:
+        elif assessment_phase == 'analysis' and message_count >= 10:
+            # When we reach analysis phase with sufficient messages, complete assessment
             next_phase = 'complete'
             assessment_complete = True
         
         response_data = {
             'response': ai_response,
             'phase': next_phase,
-            'userProfile': user_profile,  # Can be enhanced to extract info from conversation
+            'userProfile': user_profile,
             'assessmentComplete': assessment_complete
         }
         
-        # If assessment is complete, generate comprehensive report
-        if assessment_complete:
-            comprehensive_assessment = generate_comprehensive_assessment(course, conversation_history)
+        # If assessment is complete OR we just entered analysis phase, generate comprehensive report
+        if assessment_complete or (next_phase == 'analysis' and assessment_phase != 'analysis'):
+            comprehensive_assessment = generate_comprehensive_assessment(course, conversation_history + [{'type': 'user', 'content': user_message}])
             response_data['assessment'] = comprehensive_assessment
+            if next_phase == 'analysis' and assessment_phase != 'analysis':
+                # Auto-complete when analysis is generated
+                response_data['assessmentComplete'] = True
+                response_data['phase'] = 'complete'
         
         return jsonify(response_data)
         
