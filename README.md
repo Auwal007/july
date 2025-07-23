@@ -14,13 +14,13 @@
 
 ## Project Live Demo
 
-👉 **[Click here to try the deployed AI platform](#)** *(Coming Soon)*
+👉 **[Click here to try the deployed AI platform](https://skillbridgeai.netlify.app/)**
 
 ---
 
 This repository presents an AI-powered solution developed for the **3MTT Knowledge Showcase – July Edition**, under the **AI-Powered Solutions** category. It uses advanced conversational AI to **assess career readiness** of Nigerian graduates, showcasing how AI can bridge the gap between **education and employment** through personalized skill analysis, gap identification, and career development planning.
 
-👉 **[Click here to try the deployed AI platform](#)** *(Coming Soon)*
+👉 **[Click here to try the deployed AI platform](https://skillbridgeai.netlify.app/)**
 
 ---
 
@@ -44,7 +44,7 @@ Artificial Intelligence, particularly through conversational career assessment t
 - **Market Alignment**: Insights into Nigerian job market demands and opportunities
 - **Career Clarity**: Helping graduates understand their potential and optimal career paths
 
-👉 **[Click here to try the deployed AI assessment platform](#)** *(Coming Soon)*
+👉 **[Click here to try the deployed AI platform](https://skillbridgeai.netlify.app/)**
 
 > ⚠️ **Note**: This is a comprehensive demo project. A real-world robust career assessment system would benefit from integration with:
 > - Live job market data APIs
