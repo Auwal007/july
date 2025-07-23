@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Homepage from './components/Homepage';
 import CourseInput from './components/CourseInput';
 import AIChat from './components/AIChat';
@@ -34,6 +34,15 @@ function App() {
   const [currentState, setCurrentState] = useState<AppState>('homepage');
   const [chatAssessmentData, setChatAssessmentData] = useState<ChatAssessmentData | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<string>('');
+
+  // Scroll to top whenever the page state changes
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [currentState]);
 
   const handleGetStarted = () => {
     setCurrentState('course-input');

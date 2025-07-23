@@ -1,11 +1,52 @@
-import React from 'react';
-import { GraduationCap, ArrowRight, CheckCircle, Users, MessageSquare, Brain, Target, Star, TrendingUp, Award, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { GraduationCap, ArrowRight, MessageSquare, Brain, Target, Star, TrendingUp, Award, Sparkles, Menu, X } from 'lucide-react';
 
 interface HomepageProps {
   onGetStarted: () => void;
 }
 
 const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 100; // Account for sticky header
+      const elementPosition = element.offsetTop;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+    setIsNavOpen(false);
+  };
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'features', 'process', 'benefits', 'get-started'];
+      const scrollPosition = window.scrollY + 150;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -27,17 +68,74 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
               </div>
             </div>
             <div className="relative">
-              <div className="flex items-center space-x-2 text-xs sm:text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 sm:px-4 py-2 sm:py-3 rounded-2xl hover:bg-emerald-100 transition-colors">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="font-bold">🇳🇬 Nigerian Graduates</span>
+              {/* Desktop Navigation */}
+              <div className="hidden lg:flex items-center space-x-6">
+                {[
+                  { id: 'home', label: 'Home' },
+                  { id: 'features', label: 'Features' },
+                  { id: 'process', label: 'How It Works' },
+                  { id: 'benefits', label: 'Benefits' },
+                  { id: 'get-started', label: 'Get Started' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-2 rounded-lg font-bold text-sm transition-all duration-300 ${
+                      activeSection === item.id
+                        ? 'bg-emerald-100 text-emerald-700 shadow-md'
+                        : 'text-slate-600 hover:text-emerald-600 hover:bg-emerald-50'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile Hamburger Menu */}
+              <div className="lg:hidden">
+                <button
+                  onClick={() => setIsNavOpen(!isNavOpen)}
+                  className="flex items-center justify-center w-10 h-10 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all duration-300"
+                >
+                  {isNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Mobile Navigation Menu */}
+          {isNavOpen && (
+            <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-emerald-100 shadow-lg">
+              <div className="max-w-7xl mx-auto px-3 py-4">
+                <div className="flex flex-col space-y-2">
+                  {[
+                    { id: 'home', label: 'Home' },
+                    { id: 'features', label: 'Features' },
+                    { id: 'process', label: 'How It Works' },
+                    { id: 'benefits', label: 'Benefits' },
+                    { id: 'get-started', label: 'Get Started' }
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => scrollToSection(item.id)}
+                      className={`w-full px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 text-left ${
+                        activeSection === item.id
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'text-slate-600 hover:text-emerald-600 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8">
+      <section id="home" className="relative overflow-hidden py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-slate-50 to-indigo-50"></div>
@@ -138,7 +236,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
+      <section id="features" className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-1/4 w-96 h-96 border border-slate-300 rounded-full"></div>
@@ -216,7 +314,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
       </section>
 
       {/* Process Section */}
-      <section className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-slate-900 relative overflow-hidden">
+      <section id="process" className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-slate-900 relative overflow-hidden">
         {/* Background elements */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900"></div>
@@ -316,7 +414,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-emerald-50 relative overflow-hidden">
+      <section id="benefits" className="py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-emerald-50 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 via-indigo-500 to-rose-500"></div>
         
@@ -430,7 +528,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 overflow-hidden">
+      <section id="get-started" className="relative py-16 sm:py-24 lg:py-32 px-3 sm:px-6 lg:px-8 overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-900 to-indigo-900"></div>
         
@@ -506,6 +604,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
           </div>
 
           {/* Stats */}
+          {/*
           <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-black text-emerald-400 mb-2">10K+</div>
@@ -520,6 +619,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
               <div className="text-slate-400 text-sm">Average Rating</div>
             </div>
           </div>
+          */}
         </div>
         
         {/* Bottom decorative element */}
