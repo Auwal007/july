@@ -416,7 +416,7 @@ const Homepage: React.FC<HomepageProps> = ({ onGetStarted }) => {
                     <p className="text-slate-200 text-sm italic leading-relaxed">
                       "This AI actually gets it. Unlike those generic career tests, it understood my situation as a Nigerian graduate and gave me advice that actually works here."
                     </p>
-                    <p className="text-emerald-400 text-sm font-bold mt-3">- Olumide K., Computer Science Graduate</p>
+                    <p className="text-emerald-400 text-sm font-bold mt-3">- Mahmud K., Computer Science Graduate</p>
                   </div>
                 </div>
               </div>
