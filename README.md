@@ -10,8 +10,6 @@
 
 **Cohort**: 3
 
-**Location**: Jos, Plateau State.
-
 ## Project Live Demo
 
 👉 **[Click here to try the deployed AI platform](https://skillbridgeai.netlify.app/)**
